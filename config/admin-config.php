@@ -1,0 +1,74 @@
+<?php 
+
+require'db.php';
+
+use voku\helper\AntiXSS;
+require_once '../vendor/anti-xss/autoload.php';
+$antiXss = new AntiXSS();
+
+function addUser($data)
+{
+    global $conn,$antiXss;
+
+    $name = strtolower(stripslashes($antiXss->xss_clean($data["name"])));
+    $role = strtolower(stripslashes($antiXss->xss_clean($data["role"])));
+    $nip = strtolower(stripslashes($antiXss->xss_clean($data["nip"])));
+    $ttl = strtolower(stripslashes($antiXss->xss_clean($data["ttl"])));
+    $domain = strtolower(stripslashes($antiXss->xss_clean($data["domain"])));
+    $username = strtolower(stripslashes($antiXss->xss_clean($data["username"])));
+    $password = strtolower(stripslashes($antiXss->xss_clean($data["password"])));
+
+	// cek username sudah ada atau belum
+	$result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
+
+	if( mysqli_fetch_assoc($result) ) {
+		echo "<script>
+				alert('username sudah terdaftar!')
+		      </script>";
+		return false;
+	}
+
+	// enkripsi password
+	$password = password_hash($password, PASSWORD_DEFAULT);
+
+	// tambahkan userbaru ke database
+	mysqli_query($conn, "INSERT INTO users VALUES(NULL, '$name', '$username', '$password', '$role', '$nip', '$ttl', '$domain',current_timestamp())");
+
+	return mysqli_affected_rows($conn);
+}
+
+function editUser($data)
+{
+	global $conn,$antiXss;
+	
+	$id = $antiXss->xss_clean($data["id"]);
+    $name = strtolower(stripslashes($antiXss->xss_clean($data["name"])));
+    $role = strtolower(stripslashes($antiXss->xss_clean($data["role"])));
+    $nip = strtolower(stripslashes($antiXss->xss_clean($data["nip"])));
+    $ttl = strtolower(stripslashes($antiXss->xss_clean($data["ttl"])));
+    $domain = strtolower(stripslashes($antiXss->xss_clean($data["domain"])));
+    $username = strtolower(stripslashes($antiXss->xss_clean($data["username"])));
+    $password = strtolower(stripslashes($antiXss->xss_clean($data["password"])));
+
+	// enkripsi password
+	$password = password_hash($password, PASSWORD_DEFAULT);
+
+	// tambahkan userbaru ke database
+	mysqli_query($conn, "UPDATE `users` SET 
+	`name` = '$name' ,
+	`username` = '$username' ,
+	`password` = '$password' ,
+	`role_id` = '$role' ,
+	`nip` = '$nip' ,
+	`ttl` = '$ttl' ,
+	`domain` = '$domain' 
+	WHERE `id` = $id");
+
+	return mysqli_affected_rows($conn);
+}
+
+function allData(){
+    global $conn;
+    $result = mysqli_query($conn,"SELECT * FROM users");
+    return mysqli_num_rows($result);
+}

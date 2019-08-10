@@ -1,0 +1,14 @@
+Options -Indexes
+Options -Multiviews
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+##Auth
+RewriteRule ^login?$ auth/login.php
+RewriteRule ^logout?$ auth/logout.php
+
+RewriteRule ^home?$ home.php
+RewriteRule ^data?$ uploader/upload.php
+RewriteRule ^result?$ guest/result.php
