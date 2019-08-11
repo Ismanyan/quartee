@@ -1,5 +1,11 @@
 <?php 
 session_start();
+
+if(!isset($_SESSION["login"]) ) {
+	header("Location: ../login");
+	exit;
+}
+
 require '../../config/uploader-config.php';
 
 if (isset($_POST['addtable']) && addTableNew($_POST)>0) {
@@ -121,10 +127,10 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
                             <td><?= $row['product_id'] ?></td>
                             <td><?= $row['kategori'] ?></td>
                             <td><?= $row['created_at'] ?></td>
-                            <td><a href="#" class="badge badge-warning" data-toggle="modal" data-target="#addtable">Add</a></td>
+                            <td><a href="#" class="badge badge-warning" data-toggle="modal" data-target="#addtable<?= $row['id'] ?>">Add</a></td>
                         </tr>
                         <!-- add Modal -->
-                        <div class="modal fade" id="addtable" tabindex="-1" role="dialog" aria-labelledby="addtableLabel" aria-hidden="true">
+                        <div class="modal fade" id="addtable<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="addtableLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -244,7 +250,6 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
   <!-- Custom scripts for all pages-->
   <script src="../resources/js/sb-admin.min.js"></script>
    <script src="../resources/js/demo/datatables-demo.js"></script>
-  <script src="../resources/js/demo/chart-area-demo.js"></script>
 </body>
 
 </html>

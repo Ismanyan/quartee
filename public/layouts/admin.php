@@ -48,14 +48,8 @@
         <div class="card-body-icon">
             <i class="fas fa-fw fa-user-friends"></i>
         </div>
-        <div class="mr-5"><?= allData();?> User in Database</div>
+        <div class="mr-5"><?= allUsers();?> User in Database</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="#card">
-        <span class="float-left">View Details</span>
-        <span class="float-right">
-            <i class="fas fa-angle-right"></i>
-        </span>
-        </a>
     </div>
     </div>
     <div class="col-xl-3 col-sm-6 mb-3">
@@ -64,14 +58,8 @@
         <div class="card-body-icon">
             <i class="fas fa-fw fa-list"></i>
         </div>
-        <div class="mr-5">11 New Tasks!</div>
+        <div class="mr-5"><?= allUploader();?> Uploader in Database</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="#">
-        <span class="float-left">View Details</span>
-        <span class="float-right">
-            <i class="fas fa-angle-right"></i>
-        </span>
-        </a>
     </div>
     </div>
     <div class="col-xl-3 col-sm-6 mb-3">
@@ -80,14 +68,8 @@
         <div class="card-body-icon">
             <i class="fas fa-fw fa-shopping-cart"></i>
         </div>
-        <div class="mr-5">123 New Orders!</div>
+        <div class="mr-5"><?= allGuest();?> Guest in Database</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="#">
-        <span class="float-left">View Details</span>
-        <span class="float-right">
-            <i class="fas fa-angle-right"></i>
-        </span>
-        </a>
     </div>
     </div>
     <div class="col-xl-3 col-sm-6 mb-3">
@@ -96,28 +78,11 @@
         <div class="card-body-icon">
             <i class="fas fa-fw fa-life-ring"></i>
         </div>
-        <div class="mr-5">13 New Tickets!</div>
+        <div class="mr-5"><?= allData();?> Data in Database</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="#">
-        <span class="float-left">View Details</span>
-        <span class="float-right">
-            <i class="fas fa-angle-right"></i>
-        </span>
-        </a>
     </div>
     </div>
 </div>
-
-<!-- Area Chart Example-->
-<!-- <div class="card mb-3">
-    <div class="card-header">
-    <i class="fas fa-chart-area"></i>
-    Area Chart Example</div>
-    <div class="card-body">
-    <canvas id="myAreaChart" width="100%" height="30"></canvas>
-    </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-</div> -->
 
 <!-- DataTables User -->
 <div class="card mb-3" id="card">
@@ -143,21 +108,23 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($users as $row) : ?>
+                <?php $num = 0; foreach($users as $row) : ?>
+                
                 <tr>
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['name'] ?></td>
-                    <td><?= $row['id'] ?></td>
+                    <td><?php foreach (getRole($row['role_id']) as $key) {echo $key['role_name'];}?></td>
                     <td><?= $row['nip'] ?></td>
                     <td><?= $row['ttl'] ?></td>
                     <td><?= $row['domain'] ?></td>
-                    <td><?= $row['id'] ?></td>
+                    <td><?php foreach (getRole($row['role_id']) as $key) {echo $key['rol_job'];}?></td>
                     <td><?= $row['created_at'] ?></td>
                     <td><?= $row['username'] ?></td>
                     <td><?= $row['password'] ?></td>
                     <td><a href="#" class="badge badge-warning edit-data" data-toggle="modal" data-target="#edit" data-id="<?= $row['id']?>">Edit</a></td>
                 </tr>        
-                <?php endforeach; ?>
+                
+                <?php $num++; endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -232,7 +199,7 @@
                     <input type="text" class="form-control" placeholder="Name" required name="name" id="name" value="">
                 </div>
                 <div class="form-group">
-                    <select class="form-control" id="exampleFormControlSelect1" required name="role">
+                    <select class="form-control" id="role" required name="role">
                         <option selected disabled>Unit Kerja</option>
                         <option value="1">Admin</option>
                         <option value="2">Uploader</option>

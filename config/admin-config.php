@@ -67,8 +67,39 @@ function editUser($data)
 	return mysqli_affected_rows($conn);
 }
 
-function allData(){
+function allUsers(){
     global $conn;
     $result = mysqli_query($conn,"SELECT * FROM users");
     return mysqli_num_rows($result);
+}
+
+function allUploader(){
+    global $conn;
+    $result = mysqli_query($conn,"SELECT * FROM users WHERE role_id = 2");
+    return mysqli_num_rows($result);
+}
+
+
+function allGuest(){
+    global $conn;
+    $result = mysqli_query($conn,"SELECT * FROM users WHERE role_id = 3");
+    return mysqli_num_rows($result);
+}
+
+
+function allData(){
+    global $conn;
+    $result = mysqli_query($conn,"SELECT * FROM upload_data");
+    return mysqli_num_rows($result);
+}
+
+function getRole($id){
+	global $conn;
+
+    $result = mysqli_query($conn,"SELECT * FROM `role` WHERE `id` = '$id'");
+    $rows = [];
+	while( $row = mysqli_fetch_assoc($result) ) {
+		$rows[] = $row;
+	}
+	return $rows;
 }

@@ -13,15 +13,11 @@ $antiXss = new AntiXSS();
 // Check if already data in mysql
 $idUsers = $antiXss->xss_clean($_POST['id']);
 $month = date("m");
+$monthM = date("M");
 $check = mysqli_query($conn,"SELECT month_add FROM upload_date  WHERE month_add = $month AND upload_user_id = $idUsers");
-if( mysqli_fetch_assoc($check) ) {
-	echo "<script>
-			alert('Upload bulan ini telah dilaksanakan!');
-			document.location.href = '../index.php';
-			</script>";
-	return false;
+if(mysqli_fetch_assoc($check)) {
+	mysqli_query($conn,"DELETE FROM `upload_data` WHERE `upload_data`.`upload_user_id` = '$idUsers' AND  `upload_data`.`month` = '$monthM'");
 }
-
 // upload file xls
 $target = basename($_FILES['filepegawai']['name']) ;
 move_uploaded_file($_FILES['filepegawai']['tmp_name'], $target);

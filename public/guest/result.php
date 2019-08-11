@@ -1,5 +1,11 @@
 <?php 
 session_start();
+
+if(!isset($_SESSION["login"]) ) {
+	header("Location: ../login");
+	exit;
+}
+
 require '../../config/guest-config.php';
     
 if(isset($_POST['run'])){
@@ -154,6 +160,8 @@ if(isset($_POST['run'])){
           <li class="breadcrumb-item"><a href="../home">Back</a></li>
         </ol>
 
+        <a href="export.php?produk=<?=$produk ?>&kategori=<?= $kategori?>&awal=<?= $stat?>&akhir=<?= $end?>" class="btn btn-primary mb-5" target="_blank">Export Excel</a>
+
         <!-- Area Chart Example-->
         <div class="card mb-3">
           <div class="card-header">
@@ -162,7 +170,6 @@ if(isset($_POST['run'])){
           <div class="card-body">
             <canvas id="myAreaChart" width="100%" height="30"></canvas>
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
 
         <div class="card mb-3" id="card">
@@ -219,7 +226,6 @@ if(isset($_POST['run'])){
                 </table>
             </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
       </div>
       <!-- /.container-fluid -->
@@ -281,64 +287,64 @@ if(isset($_POST['run'])){
    <script src="../../resources/js/demo/datatables-demo.js"></script>
    <script>
    // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#292b2c';
+  Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Area Chart Example
-var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [{
-      label: "Sessions",
-      lineTension: 0.3,
-      backgroundColor: "rgba(2,117,216,0.2)",
-      borderColor: "rgba(2,117,216,1)",
-      pointRadius:7,
-      pointBackgroundColor: "rgba(2,117,216,1)",
-      pointBorderColor: "rgba(255,255,255,0.8)",
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(2,117,216,1)",
-      pointHitRadius: 50,
-      pointBorderWidth: 2,
-      data: [
-      <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>, 
-      <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>, 
-      <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>, 
-      <?= $month[9] ?>, <?= $month[10] ?>, <?= $month[11] ?>
-      ],
-    }],
-  },
-  options: {
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 10
-        },
-        gridLines: {
-          color: "rgba(0, 0, 0, .125)",
-        }
+  // Area Chart Example
+  var ctx = document.getElementById("myAreaChart");
+  var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [{
+        label: "Sessions",
+        lineTension: 0.3,
+        backgroundColor: "rgba(2,117,216,0.2)",
+        borderColor: "rgba(2,117,216,1)",
+        pointRadius:7,
+        pointBackgroundColor: "rgba(2,117,216,1)",
+        pointBorderColor: "rgba(255,255,255,0.8)",
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(2,117,216,1)",
+        pointHitRadius: 50,
+        pointBorderWidth: 2,
+        data: [
+        <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>, 
+        <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>, 
+        <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>, 
+        <?= $month[9] ?>, <?= $month[10] ?>, <?= $month[11] ?>
+        ],
       }],
     },
-    legend: {
-      display: false
+    options: {
+      scales: {
+        xAxes: [{
+          time: {
+            unit: 'date'
+          },
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            maxTicksLimit: 7
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            maxTicksLimit: 10
+          },
+          gridLines: {
+            color: "rgba(0, 0, 0, .125)",
+          }
+        }],
+      },
+      legend: {
+        display: false
+      }
     }
-  }
-});
+  });
 
-   </script>
+  </script>
 </body>
 
 </html>

@@ -141,6 +141,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../resources/js/sb-admin.min.js"></script>
+  <script src="../resources/js/ajax.js"></script>
 
   <!-- Demo scripts for this page-->
   <script src="../resources/js/demo/datatables-demo.js"></script>
@@ -161,7 +162,6 @@
       $(this).next('.form-control-file').addClass("selected").html(fileName);
     })
   </script>
-  <script src="../resources/js/ajax.js"></script>
 </body>
 
 </html>
