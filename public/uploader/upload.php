@@ -162,7 +162,6 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
                 </table>
             </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
       </div>
       <!-- /.container-fluid -->

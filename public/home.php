@@ -86,6 +86,8 @@
         <?php elseif($_SESSION['data']['role_id'] == 2) : ?>
           <?php require'layouts/uploader.php';?>
         <!-- Guest -->
+        <?php elseif($_SESSION['data']['role_id'] == 4) : ?>
+          <?php require'layouts/reporter.php';?>
         <?php else : ?>
           <?php require'layouts/guest.php';?>
         <?php endif; ?>

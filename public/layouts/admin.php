@@ -123,13 +123,11 @@
                     <td><?= $row['password'] ?></td>
                     <td><a href="#" class="badge badge-warning edit-data" data-toggle="modal" data-target="#edit" data-id="<?= $row['id']?>">Edit</a></td>
                 </tr>        
-                
                 <?php $num++; endforeach; ?>
             </tbody>
         </table>
     </div>
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 
 <!-- add Modal -->
@@ -151,6 +149,7 @@
                     <select class="form-control" id="exampleFormControlSelect1" required name="role">
                         <option selected disabled>Unit Kerja</option>
                         <option value="1">Admin</option>
+                        <option value="4">Reporting</option>
                         <option value="2">Uploader</option>
                         <option value="3">Guest</option>
                     </select>
@@ -202,6 +201,7 @@
                     <select class="form-control" id="role" required name="role">
                         <option selected disabled>Unit Kerja</option>
                         <option value="1">Admin</option>
+                        <option value="4">Reporting</option>
                         <option value="2">Uploader</option>
                         <option value="3">Guest</option>
                     </select>
