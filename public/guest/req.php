@@ -1,4 +1,22 @@
-<?php require '../config/login-check.php';?>
+<?php 
+session_start();
+
+if(!isset($_SESSION["login"]) ) {
+	header("Location: ../login");
+	exit;
+}
+
+require '../../config/guest-config.php';
+$query = "SELECT product_id,kategori,id FROM upload_data WHERE kategori LIKE '%REQ%' LIMIT 10";
+    
+$result = mysqli_query($conn, $query);
+// check data
+$rows = [];
+while( $row = mysqli_fetch_assoc($result) ) {
+    $rows[] = $row;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +28,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Home | Quartee</title>
+  <title>Statistik | Quartee</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,6 +52,7 @@
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">
+      
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i> <?= $_SESSION['data']['name']?>
@@ -52,44 +71,58 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item ">
         <a class="nav-link" href="home">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
       </li>
-      
-      <?php if($_SESSION['data']['role_id'] == 1) : ?>
-      <li class="nav-item">
-        <a class="nav-link" href="data">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Upload Data</span></a>
-      </li>
-      <?php endif;?>
-
-      <?php if($_SESSION['data']['role_id'] == 3) : ?>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="statistik">
           <i class="fas fa-fw fa-chart-pie"></i>
           <span>Statistik</span></a>
       </li>
-      <?php endif;?>
     </ul>
 
     <div id="content-wrapper">
 
       <div class="container-fluid">
-        <!-- Admin -->
-        <?php if($_SESSION['data']['role_id'] == 1) : ?>
-          <?php require'layouts/admin.php';?>
-        <!-- Uploader -->
-        <?php elseif($_SESSION['data']['role_id'] == 2) : ?>
-          <?php require'layouts/uploader.php';?>
-        <!-- Guest -->
-        <?php else : ?>
-          <?php require'layouts/guest.php';?>
-        <?php endif; ?>
+        
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb mb-5">
+          <li class="breadcrumb-item active"><a href="../home">back</a></li>
+        </ol>
 
+        <div class="card mb-3" id="card">
+            <div class="card-header">
+            <i class="fas fa-table"></i>
+            Result</div>
+            <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produk</th>
+                            <th>Kategori</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i=1; foreach($rows as $row) : ?>
+                            <tr>
+                                <td><?= $row['id']?></td>
+                                <td><?= $row['product_id']?></td> 
+                                <td><?= $row['kategori']?></td>  
+                            </tr>
+                            <?php $i++;?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        
+        
 
       </div>
       <!-- /.container-fluid -->
@@ -134,7 +167,6 @@
   </div>
 
 
-
   <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -143,33 +175,13 @@
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Page level plugin JavaScript-->
-  <script src="../vendor/chart.js/Chart.min.js"></script>
   <script src="../vendor/datatables/jquery.dataTables.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="../resources/js/sb-admin.min.js"></script>
-  <script src="../resources/js/ajax.js"></script>
-
-  <!-- Demo scripts for this page-->
   <script src="../resources/js/demo/datatables-demo.js"></script>
-  <script src="../resources/js/demo/chart-area-demo.js"></script>
-  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-  <script>
-    $('#datepicker').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd'
-    });
-    $('#datepickers').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd'
-    });
-    $('.custom-file-input').on('change',function(){
-      var fileName = $(this).val();
-      $(this).next('.form-control-file').addClass("selected").html(fileName);
-    })
-  </script>
+
 </body>
 
 </html>

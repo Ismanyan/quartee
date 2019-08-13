@@ -41,6 +41,17 @@ $check = mysqli_query($conn,"SELECT month_add FROM upload_date  WHERE month_add 
 			<div class="card-header">
 				<h4>LIST MANUAL PERMINTAAN</h4>
 				<hr>
+				<ul class="list-group">
+					<?php foreach(allReqData() as $row) : ?>
+					<li class="list-group-item ">
+						<div class="row align-center">
+							<div class="col-auto text-left bg-success"><?= $row['req_title']?> </div>
+							<div class="col-auto text-center bg-warning"><?= $row['priode']?></div>
+							<div class="col-auto text-right bg-danger"><?= $row['priority']?></div>
+						</div>
+					</li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</div>
 	</div>

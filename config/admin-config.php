@@ -48,7 +48,7 @@ function editUser($data)
     $ttl = strtolower(stripslashes($antiXss->xss_clean($data["ttl"])));
     $domain = strtolower(stripslashes($antiXss->xss_clean($data["domain"])));
     $username = strtolower(stripslashes($antiXss->xss_clean($data["username"])));
-    $password = strtolower(stripslashes($antiXss->xss_clean($data["password"])));
+    $password = $antiXss->xss_clean($data["password"]);
 
 	// enkripsi password
 	$password = password_hash($password, PASSWORD_DEFAULT);
@@ -89,7 +89,7 @@ function allGuest(){
 
 function allData(){
     global $conn;
-    $result = mysqli_query($conn,"SELECT * FROM upload_data");
+    $result = mysqli_query($conn,"SELECT id FROM upload_data");
     return mysqli_num_rows($result);
 }
 

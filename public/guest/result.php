@@ -16,7 +16,7 @@ if(isset($_POST['run'])){
     $end = $antiXss->xss_clean($_POST["akhir"]);
     $query = "SELECT * FROM upload_data
 			  WHERE
-			  product_id = '$produk' OR
+			  product_id = '$produk' AND
               kategori = '$kategori' AND
               created_at >= '$start' AND 
               created_at <= '$end' 
@@ -143,11 +143,17 @@ if(isset($_POST['run'])){
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="../home">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="../statistik">
+          <i class="fas fa-fw fa-chart-pie"></i>
+          <span>Statistik</span></a>
       </li>
     </ul>
 
@@ -227,6 +233,7 @@ if(isset($_POST['run'])){
             </div>
             </div>
         </div>
+        
       </div>
       <!-- /.container-fluid -->
 

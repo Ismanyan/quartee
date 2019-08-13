@@ -12,3 +12,9 @@ RewriteRule ^logout?$ auth/logout.php
 RewriteRule ^home?$ home.php
 RewriteRule ^data?$ uploader/upload.php
 RewriteRule ^result?$ guest/result.php
+RewriteRule ^statistik?$ guest/statistik.php
+
+##guest
+RewriteRule ^compl?$ guest/compl.php
+RewriteRule ^inf?$ guest/inf.php
+RewriteRule ^req?$ guest/req.php
