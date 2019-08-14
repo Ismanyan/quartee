@@ -7,11 +7,11 @@ if(!isset($_SESSION["login"]) ) {
 }
 
 require '../../config/guest-config.php';
-    
-if(isset($_POST['run'])){
+
+if(isset($_POST['run']) && count($_POST['kategori']) < 2){
     
     $produk = $antiXss->xss_clean($_POST["produk"]);
-    $kategori = $antiXss->xss_clean($_POST["kategori"]);
+    $kategori = $antiXss->xss_clean($_POST["kategori"][0]);
     $start = $antiXss->xss_clean($_POST["awal"]);
     $end = $antiXss->xss_clean($_POST["akhir"]);
     $query = "SELECT * FROM upload_data
@@ -82,9 +82,83 @@ if(isset($_POST['run'])){
         $month[11]++;
       }
     }
-    
-
-} else {
+} 
+elseif(isset($_POST['run']) && count($_POST['kategori']) >=2)
+{
+    $lAr = 0;
+    $produk = $antiXss->xss_clean($_POST["produk"]);
+    $start = $antiXss->xss_clean($_POST["awal"]);
+    $end = $antiXss->xss_clean($_POST["akhir"]);
+    foreach ($_POST['kategori'] as $row) {
+      $kategori[$lAr] = $antiXss->xss_clean($_POST["kategori"][$lAr]);
+      $query[$lAr] = "SELECT * FROM upload_data
+          WHERE
+          product_id = '$produk' AND
+                kategori = '$kategori[$lAr]' AND
+                created_at >= '$start' AND 
+                created_at <= '$end'
+              ";
+      $result[$lAr] = mysqli_query($conn, $query[$lAr]);
+      // check data
+      
+      $ress[$lAr] = mysqli_fetch_assoc($result[$lAr]);
+      
+      $month = array(
+        0 => 0, //jan
+        1 => 0, //feb
+        2 => 0, //mar
+        3 => 0, //apr
+        4 => 0, //may
+        5 => 0, //jun
+        6 => 0, //jul
+        7 => 0, //aug
+        8 => 0, //sep
+        9 => 0, //oct
+        10 => 0, //nov
+        11 => 0 //des
+      );
+      $lAr++;
+    }
+    for ($b=0; $b < $lAr; $b++) { 
+      if ($ress[$b]['month'] == 'Jan') {
+          $month[0]++;
+        } 
+        if ($ress[$b]['month'] == 'Feb'){
+          $month[1]++;
+        }
+        if ($ress[$b]['month'] == 'Mar') {
+          $month[2]++;
+        } 
+        if ($ress[$b]['month'] == 'Apr'){
+          $month[3]++;
+        }
+        if ($ress[$b]['month'] == 'May') {
+          $month[4]++;
+        } 
+        if ($ress[$b]['month'] == 'Jun'){
+          $month[5]++;
+        }
+        if ($ress[$b]['month'] == 'Jul') {
+          $month[6]++;
+        } 
+        if ($ress[$b]['month'] == 'Aug'){
+          $month[7]++;
+        }
+        if ($ress[$b]['month'] == 'Sep'){
+          $month[8]++;
+        }
+        if ($ress[$b]['month'] == 'Oct'){
+          $month[9]++;
+        }
+        if ($ress[$b]['month'] == 'Nov'){
+          $month[10]++;
+        }
+        if ($ress[$b]['month'] == 'Dec'){
+          $month[11]++;
+        }
+    }
+}
+else {
     header('Location: ../../index.php');
 }
 ?>
@@ -194,7 +268,7 @@ if(isset($_POST['run'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $i=1; foreach($rows as $row) : ?>
+                        <?php $i=0; foreach($ress as $row) : ?>
                             <tr>
                                 <td><?= $row['month']?></td>
                                 <!-- Counting -->

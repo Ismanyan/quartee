@@ -21,7 +21,6 @@
     Request 
     </button>
 </div>
-
 <div class="row justify-content-md-center">
     <div class="col-lg-12">
         <form action="guest/result.php" method="post">
@@ -35,7 +34,7 @@
             </div>
             <div class="form-group mx-auto">
                 <label for="kategori">Kategori</label>
-                <select class="form-control" id="kategori" required name="kategori">
+                <select class="form-control" id="kategori" required name="kategori[]" multiple size = 6>
                     <?php foreach(getAllKategori() as $row) : ?>
                     <option value="<?= $row['kategori_name']?>"><?= $row['kategori_name']?></option>
                     <?php endforeach; ?>
