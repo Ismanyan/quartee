@@ -24,10 +24,11 @@ while( $row = mysqli_fetch_assoc($result) ) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+	<meta name="description" content="REPORTING PORTAL HALO BCA">
+  <meta name="author" content="Quarte">
+	<link rel="shortcut icon" href="../resources/img/favicon.png">
 
-  <title>Statistik | Quartee</title>
+  <title>Saran | Quartee</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,7 +48,7 @@ while( $row = mysqli_fetch_assoc($result) ) {
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fas fa-bars"></i>
     </button>
-    <a class="navbar-brand ml-1" href="index.html">Logo Here</a>
+    <a class="navbar-brand ml-1" href="home">Quartee</a>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">

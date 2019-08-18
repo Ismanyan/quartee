@@ -100,7 +100,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="REPORTING PORTAL HALO BCA">
   <meta name="author" content="Quarte">
-
+	<link rel="shortcut icon" href="../resources/img/favicon.png">
   <title>Statistik | Quartee</title>
 
   <!-- Custom fonts for this template-->
@@ -121,9 +121,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fas fa-bars"></i>
     </button>
-    <a class="navbar-brand ml-1" href="#">
-      <!-- <img src="../resources/img/LOGO.png" alt="logo"> -->
-    </a>
+    <a class="navbar-brand ml-1" href="home">Quartee</a>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">

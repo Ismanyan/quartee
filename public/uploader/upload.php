@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 if(!isset($_SESSION["login"]) ) {
@@ -12,13 +12,13 @@ if (isset($_POST['addtable']) && addTableNew($_POST)>0) {
   echo "<script>
 			alert('Berhasil menambah data');
 			document.location.href = 'data';
-			</script>"; 
+			</script>";
 }
 if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
   echo "<script>
 			alert('Berhasil menambah data');
 			document.location.href = 'data';
-			</script>"; 
+			</script>";
 }
 ?>
 <!DOCTYPE html>
@@ -29,9 +29,9 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
+	<meta name="description" content="REPORTING PORTAL HALO BCA">
+  <meta name="author" content="Quarte">
+	<link rel="shortcut icon" href="../resources/img/favicon.png">
   <title>Data Table | Quartee</title>
 
   <!-- Custom fonts for this template-->
@@ -52,11 +52,11 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fas fa-bars"></i>
     </button>
-    <a class="navbar-brand ml-1" href="index.html">Logo Here</a>
+    <a class="navbar-brand ml-1" href="home">Quartee</a>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">
-      
+
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i> <?= $_SESSION['data']['name']?>
@@ -91,7 +91,7 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
     <div id="content-wrapper">
 
       <div class="container-fluid">
-        
+
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mb-3">
           <li class="breadcrumb-item">Uploader Page</li>
@@ -140,8 +140,8 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
                               </div>
                               <form action="" method="post">
                                 <div class="modal-body">
-                                  <input type="hidden"value="<?= $_SESSION['data']['id'] ?>" name="id_user" required>  
-                                  <input type="hidden"value="<?= $row['product_id'] ?>" name="produk" required>  
+                                  <input type="hidden"value="<?= $_SESSION['data']['id'] ?>" name="id_user" required>
+                                  <input type="hidden"value="<?= $row['product_id'] ?>" name="produk" required>
                                   <div class="form-group" >
                                     <label for="product">Product</label>
                                     <input type="text" class="form-control" id="product" placeholder="Product..." value="<?= $row['product_id'] ?>" disabled name="produk">
@@ -216,7 +216,7 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
         </div>
         <form action="" method="post">
           <div class="modal-body">
-            <input type="hidden"value="<?= $_SESSION['data']['id'] ?>" name="id_user" required>  
+            <input type="hidden"value="<?= $_SESSION['data']['id'] ?>" name="id_user" required>
             <div class="form-group">
               <label for="product">Product</label>
               <input type="text" class="form-control" id="product" placeholder="Product..." name="produk" required>
@@ -232,7 +232,7 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
     </div>
   </div>
 
-  
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>
