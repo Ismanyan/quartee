@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 if(!isset($_SESSION["login"]) ) {
@@ -8,14 +8,14 @@ if(!isset($_SESSION["login"]) ) {
 
 require '../../config/guest-config.php';
   $query = "SELECT `month` FROM upload_data";
-      
+
   $result = mysqli_query($conn, $query);
   // check data
   $rows = [];
   while( $row = mysqli_fetch_assoc($result) ) {
       $rows[] = $row;
   }
-  
+
   $month = array(
   0 => 0, //jan
   1 => 0, //feb
@@ -31,28 +31,28 @@ require '../../config/guest-config.php';
   11 => 0 //des
 );
 
-for ($b=0; $b < count($rows); $b++) { 
+for ($b=0; $b < count($rows); $b++) {
   if ($rows[$b]['month'] == 'Jan') {
     $month[0]++;
-  } 
+  }
   if ($rows[$b]['month'] == 'Feb'){
     $month[1]++;
   }
   if ($rows[$b]['month'] == 'Mar') {
     $month[2]++;
-  } 
+  }
   if ($rows[$b]['month'] == 'Apr'){
     $month[3]++;
   }
   if ($rows[$b]['month'] == 'May') {
     $month[4]++;
-  } 
+  }
   if ($rows[$b]['month'] == 'Jun'){
     $month[5]++;
   }
   if ($rows[$b]['month'] == 'Jul') {
     $month[6]++;
-  } 
+  }
   if ($rows[$b]['month'] == 'Aug'){
     $month[7]++;
   }
@@ -70,11 +70,24 @@ for ($b=0; $b < count($rows); $b++) {
   }
 }
 
-if (isset($_POST['qna']) && sendChat($_POST)) {
-  echo "<script>
-        alert('Pertanyaan Sukses dikirim');
-        document.location.href = 'statistik';
-      </script>";
+if (isset($_POST['qna'])) {
+	$sendchat = sendChat($_POST);
+	if ($sendchat !== 0) {
+		$sendStat = 1;
+	} else {
+		$sendStat = 0;
+	}
+}
+
+$start = mysqli_query($conn,"SELECT id,total_data FROM data_per_month WHERE total_data IS NOT NULL ORDER BY id ASC LIMIT 1");
+$start_data = mysqli_fetch_assoc($start);
+
+$end = mysqli_query($conn,"SELECT id,total_data FROM data_per_month WHERE total_data IS NOT NULL ORDER BY id DESC LIMIT 1");
+$end_data = mysqli_fetch_assoc($end);
+if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
+	$resultStatistik = 0;
+} else {
+	$resultStatistik = ($end_data["total_data"] / $start_data["total_data"]) - 2;
 }
 ?>
 <!DOCTYPE html>
@@ -85,8 +98,8 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="REPORTING PORTAL HALO BCA">
+  <meta name="author" content="Quarte">
 
   <title>Statistik | Quartee</title>
 
@@ -108,11 +121,13 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fas fa-bars"></i>
     </button>
-    <a class="navbar-brand ml-1" href="index.html">Logo Here</a>
+    <a class="navbar-brand ml-1" href="#">
+      <!-- <img src="../resources/img/LOGO.png" alt="logo"> -->
+    </a>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">
-      
+
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i> <?= $_SESSION['data']['name']?>
@@ -147,35 +162,107 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
     <div id="content-wrapper">
 
       <div class="container-fluid">
-        
+
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb mb-5">
+        <ol class="breadcrumb mb-3">
           <li class="breadcrumb-item">Guest Page</li>
           <li class="breadcrumb-item active">Statistik</li>
         </ol>
 
-        <!-- Area Chart Example-->
-        <div class="card mb-5">
-          <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Grafik Bulanan</div>
-          <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
+        <!-- SLIDER -->
+        <div id="carouselExampleControls" class="carousel slide mb-5" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="../resources/img/RUNNING BANNER 1.png" alt="First slide">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="../resources/img/RUNNING BANNER 2.png" alt="Second slide">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <!-- Area Chart Example-->
+            <div class="card mb-5">
+              <div class="card-header">
+                <i class="fas fa-chart-area"></i>
+                Grafik Bulanan</div>
+              <div class="card-body">
+                <canvas id="myAreaChart" width="100%" height="30"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                Persentase pencapaian
+              </div>
+              <div class="card-body py-5">
+                <p>Rata-rata pencapaian penaikan/penurunan</p>
+                <h1><?= $resultStatistik ?>%</h1>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row mb-5">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        Statistik Pekembangan
-                    </div>
-                    <div class="card-body">
-                        <p>Total <b>complaint</b> kartu kredit</p>
-                        <h4 class="text-success"><?= getAllResultData();?></h4>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Compl</b> kartu kredit</p>
+                      <h4 class="text-success"><?= getAllResultData('COMPL/');?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Inf</b> kartu kredit</p>
+                      <h4 class="text-success"><?= getAllResultData('INF/');?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Req</b> kartu kredit</p>
+                      <h4 class="text-success"><?= getAllResultData('REQ/');?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Saran</b> kartu kredit</p>
+                      <h4 class="text-success"><?= getAllResultData('SARAN/');?></h4>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="row my-5">
+
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
@@ -184,20 +271,26 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
                     <div class="card-body">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                TOP compl Kartu Kredita
+                                <p>TOP 10 <b>compl</b></p>
                                 <a href="compl">
                                   <span class="badge badge-primary badge-pill">Klik Here</span>
                                 </a>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                TOP Req Kartu Kredita
+                                <p>TOP 10 <b>Req</b></p>
                                 <a href="req">
                                   <span class="badge badge-primary badge-pill">Klik Here</span>
                                 </a>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                TOP Inf Kartu Kredit
+                                <p>TOP 10 <b>Inf</b></p>
                                 <a href="inf">
+                                  <span class="badge badge-primary badge-pill">Klik Here</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <p>TOP 10 <b>Saran</b></p>
+                                <a href="saran">
                                   <span class="badge badge-primary badge-pill">Klik Here</span>
                                 </a>
                             </li>
@@ -205,47 +298,74 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6">
+              <div class="card mb-5">
+                <div class="card-header">
+                    QnA
+                </div>
+                <div class="card-body">
+									<?php if (isset($sendStat) && $sendStat !== 0): ?>
+										<div class="card mb-5">
+											<div class="card-header">
+												Daftar Jawaban
+											</div>
+												<div class="card-body">
+												<ul class="list-group" style="max-height:500px; overflow-y: scroll;">
+												<?php foreach ($sendchat as $row): ?>
+													<li class="list-group-item d-flex justify-content-between align-items-center">
+												    <?= $row['quest'] ?>
+												    <button class="badge badge-primary badge-pill" data-toggle="modal" data-target="#jawaban-<?= $row['id'] ?>">Jawaban</button>
+												  </li>
+													<!-- Modal -->
+													<div class="modal fade" id="jawaban-<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="jawabanLabel" aria-hidden="true">
+													  <div class="modal-dialog" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title" id="jawabanLabel"><?= $row['quest'] ?></h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+																	<?= $row['answer'] ?>
+													      </div>
+													      <div class="modal-footer">
+													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+												<?php endforeach; ?>
+												</ul>
+											</div>
+										</div>
+									<?php elseif(isset($sendStat) && $sendStat === 0): ?>
+										<div class="alert alert-info" role="alert">
+											Pertanyaan berhasil dikirim.
+										</div>
+										<?php endif; ?>
+
+                  <form action="" method="post">
+                    <div class="form-inline">
+                        <input type="hidden" class="form-control w-75" placeholder="Pertanyaan anda..." name="id" value="<?= $_SESSION['data']['id']?>">
+                        <select class="form-control w-25" id="exampleFormControlSelect1" name="qnaproduk">
+                            <option selected disabled>Produk...</option>
+                            <?php foreach(getAllProduk() as $row) : ?>
+                            <option value="<?= $row['name_produk']?>"><?= $row['name_produk']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input type="text" class="form-control w-75" placeholder="Pertanyaan anda..." name="ask">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="qna" class="btn btn-primary w-100 mt-3">Send</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
         </div>
 
-        <div class="card mb-5">
-            <div class="card-header">
-                QnA
-            </div>
-            <div class="card-body">
-              <form action="" method="post">
-                <div class="form-inline">
-                    <input type="hidden" class="form-control w-75" placeholder="Pertanyaan anda..." name="id" value="<?= $_SESSION['data']['id']?>">
-                    <select class="form-control w-25" id="exampleFormControlSelect1" name="qnaproduk">
-                        <option selected disabled>Produk...</option>
-                        <?php foreach(getAllProduk() as $row) : ?>
-                        <option value="<?= $row['name_produk']?>"><?= $row['name_produk']?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="text" class="form-control w-75" placeholder="Pertanyaan anda..." name="ask">
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="qna" class="btn btn-primary w-100 mt-3">Send</button>
-                </div>
-              </form>
-            </div>
-
-            <ul class="list-group px-4 mb-4">
-              <?php foreach(allAsking() as $row) : ?>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <?= $row['quest']?>
-                  <span class="badge badge-primary badge-pill">ASK</span>
-              </li>
-              <?php if(isset($row['answer'])) : ?>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <?= $row['answer']?>
-                    <span class="badge badge-success badge-pill">ANSWER</span>
-                </li>
-              <?php endif; ?>
-              <?php endforeach; ?>
-            </ul>
-        </div>
-
-        
 
       </div>
       <!-- /.container-fluid -->
@@ -254,7 +374,7 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
+            <span>Copyright © Quartee 2019</span>
           </div>
         </div>
       </footer>
@@ -289,7 +409,7 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
     </div>
   </div>
 
-  
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>
@@ -325,9 +445,9 @@ if (isset($_POST['qna']) && sendChat($_POST)) {
         pointHitRadius: 50,
         pointBorderWidth: 2,
         data: [
-        <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>, 
-        <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>, 
-        <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>, 
+        <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>,
+        <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>,
+        <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>,
         <?= $month[9] ?>, <?= $month[10] ?>, <?= $month[11] ?>
         ],
       }],

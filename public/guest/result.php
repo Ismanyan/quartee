@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 if(!isset($_SESSION["login"]) ) {
@@ -8,159 +8,162 @@ if(!isset($_SESSION["login"]) ) {
 
 require '../../config/guest-config.php';
 
-if(isset($_POST['run']) && count($_POST['kategori']) < 2){
-    
-    $produk = $antiXss->xss_clean($_POST["produk"]);
-    $kategori = $antiXss->xss_clean($_POST["kategori"][0]);
-    $start = $antiXss->xss_clean($_POST["awal"]);
-    $end = $antiXss->xss_clean($_POST["akhir"]);
-    $query = "SELECT * FROM upload_data
-			  WHERE
-			  product_id = '$produk' AND
-              kategori = '$kategori' AND
-              created_at >= '$start' AND 
-              created_at <= '$end' 
-            ";
-        
-    $result = mysqli_query($conn, $query);
-    // check data
-    $rows = [];
-    while( $row = mysqli_fetch_assoc($result) ) {
-        $rows[] = $row;
-    }
+if (isset($_POST['run']) && count($_POST['kategori']) > 1) {
+	$lAr = 0;
+	$produk = $antiXss->xss_clean($_POST["produk"]);
+	$start = $antiXss->xss_clean($_POST["awal"]);
+	$end = $antiXss->xss_clean($_POST["akhir"]);
+	$month = array(
+   0 => 0, //jan
+   1 => 0, //feb
+   2 => 0, //mar
+   3 => 0, //apr
+   4 => 0, //may
+   5 => 0, //jun
+   6 => 0, //jul
+   7 => 0, //aug
+   8 => 0, //sep
+   9 => 0, //oct
+   10 => 0, //nov
+   11 => 0 //des
+ 	);
+	$months = array(
+   0 => 0, //jan
+   1 => 0, //feb
+   2 => 0, //mar
+   3 => 0, //apr
+   4 => 0, //may
+   5 => 0, //jun
+   6 => 0, //jul
+   7 => 0, //aug
+   8 => 0, //sep
+   9 => 0, //oct
+   10 => 0, //nov
+   11 => 0 //des
+ 	);
+	for ($i=0; $i < count($_POST['kategori']); $i++) {
+		$kategori[$i] = $antiXss->xss_clean($_POST["kategori"][$i]);
+		$query[$i] = "SELECT * FROM upload_data
+		WHERE
+		product_id = '$produk' AND
+		kategori = '$kategori[$i]' AND
+		created_at >= '$start' AND
+		created_at <= '$end'
+		";
 
-     $month = array(
-      0 => 0, //jan
-      1 => 0, //feb
-      2 => 0, //mar
-      3 => 0, //apr
-      4 => 0, //may
-      5 => 0, //jun
-      6 => 0, //jul
-      7 => 0, //aug
-      8 => 0, //sep
-      9 => 0, //oct
-      10 => 0, //nov
-      11 => 0 //des
-    );
+		$result[$i] = mysqli_query($conn, $query[$i]);
 
-    for ($b=0; $b < count($rows); $b++) { 
-      if ($rows[$b]['month'] == 'Jan') {
-        $month[0]++;
-      } 
-      if ($rows[$b]['month'] == 'Feb'){
-        $month[1]++;
-      }
-      if ($rows[$b]['month'] == 'Mar') {
-        $month[2]++;
-      } 
-      if ($rows[$b]['month'] == 'Apr'){
-        $month[3]++;
-      }
-      if ($rows[$b]['month'] == 'May') {
-        $month[4]++;
-      } 
-      if ($rows[$b]['month'] == 'Jun'){
-        $month[5]++;
-      }
-      if ($rows[$b]['month'] == 'Jul') {
-        $month[6]++;
-      } 
-      if ($rows[$b]['month'] == 'Aug'){
-        $month[7]++;
-      }
-      if ($rows[$b]['month'] == 'Sep'){
-        $month[8]++;
-      }
-      if ($rows[$b]['month'] == 'Oct'){
-        $month[9]++;
-      }
-      if ($rows[$b]['month'] == 'Nov'){
-        $month[10]++;
-      }
-      if ($rows[$b]['month'] == 'Dec'){
-        $month[11]++;
-      }
-    }
-} 
-elseif(isset($_POST['run']) && count($_POST['kategori']) >=2)
-{
-    $lAr = 0;
-    $produk = $antiXss->xss_clean($_POST["produk"]);
-    $start = $antiXss->xss_clean($_POST["awal"]);
-    $end = $antiXss->xss_clean($_POST["akhir"]);
-    foreach ($_POST['kategori'] as $row) {
-      $kategori[$lAr] = $antiXss->xss_clean($_POST["kategori"][$lAr]);
-      $query[$lAr] = "SELECT * FROM upload_data
-          WHERE
-          product_id = '$produk' AND
-                kategori = '$kategori[$lAr]' AND
-                created_at >= '$start' AND 
-                created_at <= '$end'
-              ";
-      $result[$lAr] = mysqli_query($conn, $query[$lAr]);
-      // check data
-      
-      $ress[$lAr] = mysqli_fetch_assoc($result[$lAr]);
-      
-      $month = array(
-        0 => 0, //jan
-        1 => 0, //feb
-        2 => 0, //mar
-        3 => 0, //apr
-        4 => 0, //may
-        5 => 0, //jun
-        6 => 0, //jul
-        7 => 0, //aug
-        8 => 0, //sep
-        9 => 0, //oct
-        10 => 0, //nov
-        11 => 0 //des
-      );
-      $lAr++;
-    }
-    for ($b=0; $b < $lAr; $b++) { 
-      if ($ress[$b]['month'] == 'Jan') {
-          $month[0]++;
-        } 
-        if ($ress[$b]['month'] == 'Feb'){
-          $month[1]++;
-        }
-        if ($ress[$b]['month'] == 'Mar') {
-          $month[2]++;
-        } 
-        if ($ress[$b]['month'] == 'Apr'){
-          $month[3]++;
-        }
-        if ($ress[$b]['month'] == 'May') {
-          $month[4]++;
-        } 
-        if ($ress[$b]['month'] == 'Jun'){
-          $month[5]++;
-        }
-        if ($ress[$b]['month'] == 'Jul') {
-          $month[6]++;
-        } 
-        if ($ress[$b]['month'] == 'Aug'){
-          $month[7]++;
-        }
-        if ($ress[$b]['month'] == 'Sep'){
-          $month[8]++;
-        }
-        if ($ress[$b]['month'] == 'Oct'){
-          $month[9]++;
-        }
-        if ($ress[$b]['month'] == 'Nov'){
-          $month[10]++;
-        }
-        if ($ress[$b]['month'] == 'Dec'){
-          $month[11]++;
-        }
-    }
+		foreach($result[$i] as $row) {
+		 if ($row['month'] == 'Jan') {
+	     $month[0]++;
+	   }
+	   if ($row['month'] == 'Feb'){
+	     $month[1]++;
+	   }
+	   if ($row['month'] == 'Mar') {
+	     $month[2]++;
+	   }
+	   if ($row['month'] == 'Apr'){
+	     $month[3]++;
+	   }
+	   if ($row['month'] == 'May') {
+	     $month[4]++;
+	   }
+	   if ($row['month'] == 'Jun'){
+	     $month[5]++;
+	   }
+	   if ($row['month'] == 'Jul') {
+	     $month[6]++;
+	   }
+	   if ($row['month'] == 'Aug'){
+	     $month[7]++;
+	   }
+	   if ($row['month'] == 'Sep'){
+	     $month[8]++;
+	   }
+	   if ($row['month'] == 'Oct'){
+	     $month[9]++;
+	   }
+	   if ($row['month'] == 'Nov'){
+	     $month[10]++;
+	   }
+	   if ($row['month'] == 'Dec'){
+	     $month[11]++;
+	   }
+		}
+		$lAr++;
+	}
 }
-else {
-    header('Location: ../../index.php');
+elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
+	$lAr = 0;
+	$produk = $antiXss->xss_clean($_POST["produk"]);
+  $kategori = $antiXss->xss_clean($_POST["kategori"][0]);
+  $start = $antiXss->xss_clean($_POST["awal"]);
+  $end = $antiXss->xss_clean($_POST["akhir"]);
+
+  $query = "SELECT * FROM upload_data
+  WHERE
+  product_id = '$produk' AND
+  kategori = '$kategori' AND
+  created_at >= '$start' AND
+  created_at <= '$end'
+  ";
+	$result = mysqli_query($conn, $query);
+
+	$month = array(
+   0 => 0, //jan
+   1 => 0, //feb
+   2 => 0, //mar
+   3 => 0, //apr
+   4 => 0, //may
+   5 => 0, //jun
+   6 => 0, //jul
+   7 => 0, //aug
+   8 => 0, //sep
+   9 => 0, //oct
+   10 => 0, //nov
+   11 => 0 //des
+ );
+ foreach($result as $row) {
+	 if ($row['month'] == 'Jan') {
+     $month[0]++;
+   }
+   if ($row['month'] == 'Feb'){
+     $month[1]++;
+   }
+   if ($row['month'] == 'Mar') {
+     $month[2]++;
+   }
+   if ($row['month'] == 'Apr'){
+     $month[3]++;
+   }
+   if ($row['month'] == 'May') {
+     $month[4]++;
+   }
+   if ($row['month'] == 'Jun'){
+     $month[5]++;
+   }
+   if ($row['month'] == 'Jul') {
+     $month[6]++;
+   }
+   if ($row['month'] == 'Aug'){
+     $month[7]++;
+   }
+   if ($row['month'] == 'Sep'){
+     $month[8]++;
+   }
+   if ($row['month'] == 'Oct'){
+     $month[9]++;
+   }
+   if ($row['month'] == 'Nov'){
+     $month[10]++;
+   }
+   if ($row['month'] == 'Dec'){
+     $month[11]++;
+   }
+  }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -198,7 +201,7 @@ else {
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">
-      
+
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i> <?= $_SESSION['data']['name']?>
@@ -223,7 +226,7 @@ else {
           <span>Dashboard</span>
         </a>
       </li>
-      
+
       <li class="nav-item">
         <a class="nav-link" href="../statistik">
           <i class="fas fa-fw fa-chart-pie"></i>
@@ -234,13 +237,88 @@ else {
     <div id="content-wrapper">
 
       <div class="container-fluid">
-        
+
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mb-3">
           <li class="breadcrumb-item"><a href="../home">Back</a></li>
         </ol>
 
-        <a href="export.php?produk=<?=$produk ?>&kategori=<?= $kategori?>&awal=<?= $stat?>&akhir=<?= $end?>" class="btn btn-primary mb-5" target="_blank">Export Excel</a>
+				<!-- MULTI ARRAY -->
+        <?php if(count($_POST['kategori']) >1) : ?>
+					<?php $kat = implode(",",$_POST['kategori']); ?>
+					<a href="export.php?produk=<?=$produk ?>&kategori=<?= $kat ?>&awal=<?= $start?>&akhir=<?= $end?>" class="btn btn-primary mb-5" target="_blank">Export Excel</a>
+        <!-- Area Chart Example-->
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fas fa-chart-area"></i>
+            Statistik</div>
+          <div class="card-body">
+            <canvas id="myAreaChart" width="100%" height="30"></canvas>
+          </div>
+        </div>
+
+        <div class="card mb-3" id="card">
+            <div class="card-header">
+            <i class="fas fa-table"></i>
+            Result</div>
+            <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Priode</th>
+                            <th>Jumlah</th>
+                            <th>Product</th>
+                            <th>Kategori</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+											<?php for ($i=0; $i < $lAr; $i++):  ?>
+												<?php foreach ($result[$i] as $row): ?>
+														<tr>
+															<td><?php echo $row['month'] ?></td>
+															<!-- Counting -->
+                                <?php if($row['month'] == 'Jan') : ?>
+                                <td><?= $month[0] ?></td>
+                                <?php elseif($row['month'] == 'Feb') : ?>
+                                <td><?= $month[1] ?></td>
+                                <?php elseif($row['month'] == 'Mar') : ?>
+                                <td><?= $month[2] ?></td>
+                                <?php elseif($row['month'] == 'Apr') : ?>
+                                <td><?= $month[3] ?></td>
+                                <?php elseif($row['month'] == 'May') : ?>
+                                <td><?= $month[4] ?></td>
+                                <?php elseif($row['month'] == 'Jun') : ?>
+                                <td><?= $month[5] ?></td>
+                                <?php elseif($row['month'] == 'Jul') : ?>
+                                <td><?= $month[6] ?></td>
+                                <?php elseif($row['month'] == 'Aug') : ?>
+                                <td><?= $month[7] ?></td>
+                                <?php elseif($row['month'] == 'Sep') : ?>
+                                <td><?= $month[8] ?></td>
+                                <?php elseif($row['month'] == 'Oct') : ?>
+                                <td><?= $month[9] ?></td>
+                                <?php elseif($row['month'] == 'Nov') : ?>
+                                <td><?= $month[10] ?></td>
+                                <?php elseif($row['month'] == 'Dec') : ?>
+                                <td><?= $month[11] ?></td>
+                                <?php endif; ?>
+															<td><?php echo $row['product_id'] ?></td>
+															<td><?php echo $row['kategori'] ?></td>
+														</tr>
+												<?php endforeach;?>
+											<?php endfor; ?>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        <?php endif; ?>
+				<!-- END MULTI ARRAY -->
+
+				<!-- SINGLE ARRAY -->
+				<?php if(count($_POST['kategori']) <2) : ?>
+        <a href="export.php?produk=<?=$produk ?>&kategori=<?= $kategori?>,&awal=<?= $start?>&akhir=<?= $end?>" class="btn btn-primary mb-5" target="_blank">Export Excel</a>
 
         <!-- Area Chart Example-->
         <div class="card mb-3">
@@ -268,12 +346,12 @@ else {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $i=0; foreach($ress as $row) : ?>
+                        <?php $i=0; foreach($result as $row) : ?>
                             <tr>
                                 <td><?= $row['month']?></td>
                                 <!-- Counting -->
                                 <?php if($row['month'] == 'Jan') : ?>
-                                <td><?= $month[0] ?></td> 
+                                <td><?= $month[0] ?></td>
                                 <?php elseif($row['month'] == 'Feb') : ?>
                                 <td><?= $month[1] ?></td>
                                 <?php elseif($row['month'] == 'Mar') : ?>
@@ -297,8 +375,8 @@ else {
                                 <?php elseif($row['month'] == 'Dec') : ?>
                                 <td><?= $month[11] ?></td>
                                 <?php endif; ?>
-                                <td><?= $row['product_id']?></td> 
-                                <td><?= $row['kategori']?></td>  
+                                <td><?= $row['product_id']?></td>
+                                <td><?= $row['kategori']?></td>
                             </tr>
                             <?php $i++;?>
                         <?php endforeach; ?>
@@ -307,7 +385,8 @@ else {
             </div>
             </div>
         </div>
-        
+        <?php endif; ?>
+				<!-- END SINGLE ARRAY -->
       </div>
       <!-- /.container-fluid -->
 
@@ -315,7 +394,7 @@ else {
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
+            <span>Copyright © Quartee 2019</span>
           </div>
         </div>
       </footer>
@@ -349,7 +428,7 @@ else {
       </div>
     </div>
   </div>
-  
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="../../vendor/jquery/jquery.min.js"></script>
@@ -390,9 +469,9 @@ else {
         pointHitRadius: 50,
         pointBorderWidth: 2,
         data: [
-        <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>, 
-        <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>, 
-        <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>, 
+        <?= $month[0] ?>, <?= $month[1] ?>, <?= $month[2] ?>,
+        <?= $month[3] ?>, <?= $month[4] ?>, <?= $month[5] ?>,
+        <?= $month[6] ?>, <?= $month[7] ?>, <?= $month[8] ?>,
         <?= $month[9] ?>, <?= $month[10] ?>, <?= $month[11] ?>
         ],
       }],

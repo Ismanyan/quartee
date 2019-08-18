@@ -56,7 +56,7 @@
     <div class="card text-white bg-warning o-hidden h-100">
         <div class="card-body">
         <div class="card-body-icon">
-            <i class="fas fa-fw fa-list"></i>
+            <i class="fas fa-fw fa-file-upload"></i>
         </div>
         <div class="mr-5"><?= allUploader();?> Uploader in Database</div>
         </div>
@@ -66,7 +66,7 @@
     <div class="card text-white bg-success o-hidden h-100">
         <div class="card-body">
         <div class="card-body-icon">
-            <i class="fas fa-fw fa-shopping-cart"></i>
+            <i class="fas fa-fw fa-user-tie"></i>
         </div>
         <div class="mr-5"><?= allGuest();?> Guest in Database</div>
         </div>
@@ -76,7 +76,7 @@
     <div class="card text-white bg-danger o-hidden h-100">
         <div class="card-body">
         <div class="card-body-icon">
-            <i class="fas fa-fw fa-life-ring"></i>
+            <i class="fas fa-fw fa-database"></i>
         </div>
         <div class="mr-5"><?= allData();?> Data in Database</div>
         </div>
@@ -96,6 +96,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Posisi</th>
                     <th>Unit Kerja</th>
                     <th>NIP</th>
                     <th>TTL</th>
@@ -109,11 +110,11 @@
             </thead>
             <tbody>
                 <?php $num = 0; foreach($users as $row) : ?>
-                
                 <tr>
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['name'] ?></td>
                     <td><?php foreach (getRole($row['role_id']) as $key) {echo $key['role_name'];}?></td>
+                    <td><?= $row['unit_kerja'] ?></td>
                     <td><?= $row['nip'] ?></td>
                     <td><?= $row['ttl'] ?></td>
                     <td><?= $row['domain'] ?></td>
@@ -122,7 +123,7 @@
                     <td><?= $row['username'] ?></td>
                     <td><?= $row['password'] ?></td>
                     <td><a href="#" class="badge badge-warning edit-data" data-toggle="modal" data-target="#edit" data-id="<?= $row['id']?>">Edit</a></td>
-                </tr>        
+                </tr>
                 <?php $num++; endforeach; ?>
             </tbody>
         </table>
@@ -147,7 +148,7 @@
                 </div>
                 <div class="form-group">
                     <select class="form-control" id="exampleFormControlSelect1" required name="role">
-                        <option selected disabled>Unit Kerja</option>
+                        <option selected disabled>Posisi</option>
                         <option value="1">Admin</option>
                         <option value="4">Reporting</option>
                         <option value="2">Uploader</option>
@@ -155,10 +156,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Unit Kerja" required name="ut">
+                </div>
+                <div class="form-group">
                     <input type="number" class="form-control validate" placeholder="NIP" required name="nip">
                 </div>
                 <div class="form-group">
-                    <input id="datepicker" class="form-control" required name="ttl"/>          
+                    <input id="datepicker" class="form-control" required name="ttl"/>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Domain" required name="domain">
@@ -207,10 +211,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Unit Kerja" id="ut" required name="ut">
+                </div>
+                <div class="form-group">
                     <input type="number" class="form-control validate" placeholder="NIP" required name="nip" id="nip" value="">
                 </div>
                 <div class="form-group">
-                    <input id="datepickers" class="form-control datepicker" required name="ttl" id="name" value=""/>          
+                    <input id="datepickers" class="form-control datepicker" required name="ttl" id="name" value=""/>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Domain" required name="domain" id="domain" value="">
@@ -230,4 +237,3 @@
     </div>
   </div>
 </div>
-

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require 'db.php';
 
@@ -31,3 +31,8 @@ if (isset($_POST['submit'])) {
 	$error = true;
 }
 
+if (isset($error)) {
+	echo "<script>
+			alert('User & Password Invalid')
+		</script>";
+}

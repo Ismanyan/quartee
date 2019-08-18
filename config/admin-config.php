@@ -11,12 +11,13 @@ function addUser($data)
     global $conn,$antiXss;
 
     $name = strtolower(stripslashes($antiXss->xss_clean($data["name"])));
-    $role = strtolower(stripslashes($antiXss->xss_clean($data["role"])));
+	$role = strtolower(stripslashes($antiXss->xss_clean($data["role"])));
+	$ut = strtolower(stripslashes($antiXss->xss_clean($data["ut"])));
     $nip = strtolower(stripslashes($antiXss->xss_clean($data["nip"])));
     $ttl = strtolower(stripslashes($antiXss->xss_clean($data["ttl"])));
     $domain = strtolower(stripslashes($antiXss->xss_clean($data["domain"])));
-    $username = strtolower(stripslashes($antiXss->xss_clean($data["username"])));
-    $password = strtolower(stripslashes($antiXss->xss_clean($data["password"])));
+    $username = $antiXss->xss_clean($data["username"]);
+    $password = $antiXss->xss_clean($data["password"]);
 
 	// cek username sudah ada atau belum
 	$result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
@@ -32,7 +33,7 @@ function addUser($data)
 	$password = password_hash($password, PASSWORD_DEFAULT);
 
 	// tambahkan userbaru ke database
-	mysqli_query($conn, "INSERT INTO users VALUES(NULL, '$name', '$username', '$password', '$role', '$nip', '$ttl', '$domain',current_timestamp())");
+	mysqli_query($conn, "INSERT INTO users VALUES(NULL, '$name', '$username', '$password', '$role', '$nip', '$ttl', '$domain', current_timestamp(), '$ut')");
 
 	return mysqli_affected_rows($conn);
 }
@@ -44,10 +45,11 @@ function editUser($data)
 	$id = $antiXss->xss_clean($data["id"]);
     $name = strtolower(stripslashes($antiXss->xss_clean($data["name"])));
     $role = strtolower(stripslashes($antiXss->xss_clean($data["role"])));
-    $nip = strtolower(stripslashes($antiXss->xss_clean($data["nip"])));
+	$nip = strtolower(stripslashes($antiXss->xss_clean($data["nip"])));
+	$ut = strtolower(stripslashes($antiXss->xss_clean($data["ut"])));
     $ttl = strtolower(stripslashes($antiXss->xss_clean($data["ttl"])));
     $domain = strtolower(stripslashes($antiXss->xss_clean($data["domain"])));
-    $username = strtolower(stripslashes($antiXss->xss_clean($data["username"])));
+    $username = $antiXss->xss_clean($data["username"]);
     $password = $antiXss->xss_clean($data["password"]);
 
 	// enkripsi password
@@ -61,7 +63,8 @@ function editUser($data)
 	`role_id` = '$role' ,
 	`nip` = '$nip' ,
 	`ttl` = '$ttl' ,
-	`domain` = '$domain' 
+	`domain` = '$domain' ,
+	`unit_kerja` = '$ut'
 	WHERE `id` = $id");
 
 	return mysqli_affected_rows($conn);

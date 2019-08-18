@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 if(!isset($_SESSION["login"]) ) {
@@ -7,15 +7,14 @@ if(!isset($_SESSION["login"]) ) {
 }
 
 require '../../config/guest-config.php';
-$query = "SELECT product_id,kategori,id FROM upload_data WHERE kategori LIKE '%REQ%' LIMIT 10";
-    
+$query = "SELECT produk,kategori,total FROM top10 WHERE kategori LIKE '%REQ/%' ORDER BY total DESC LIMIT 10";
+
 $result = mysqli_query($conn, $query);
 // check data
 $rows = [];
 while( $row = mysqli_fetch_assoc($result) ) {
     $rows[] = $row;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +51,7 @@ while( $row = mysqli_fetch_assoc($result) ) {
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto">
-      
+
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i> <?= $_SESSION['data']['name']?>
@@ -87,13 +86,13 @@ while( $row = mysqli_fetch_assoc($result) ) {
     <div id="content-wrapper">
 
       <div class="container-fluid">
-        
+
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mb-5">
           <li class="breadcrumb-item active"><a href="../home">back</a></li>
         </ol>
 
-        <div class="card mb-3" id="card">
+				<div class="card mb-3" id="card">
             <div class="card-header">
             <i class="fas fa-table"></i>
             Result</div>
@@ -102,17 +101,19 @@ while( $row = mysqli_fetch_assoc($result) ) {
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>NO</th>
                             <th>Produk</th>
                             <th>Kategori</th>
+														<th>Jumlah</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $i=1; foreach($rows as $row) : ?>
                             <tr>
-                                <td><?= $row['id']?></td>
-                                <td><?= $row['product_id']?></td> 
-                                <td><?= $row['kategori']?></td>  
+                                <td><?= $i?></td>
+                                <td><?= $row['produk']?></td>
+                                <td><?= $row['kategori']?></td>
+																<td><?= $row['total']?></td>
                             </tr>
                             <?php $i++;?>
                         <?php endforeach; ?>
@@ -121,8 +122,6 @@ while( $row = mysqli_fetch_assoc($result) ) {
             </div>
             </div>
         </div>
-        
-        
 
       </div>
       <!-- /.container-fluid -->
@@ -131,7 +130,7 @@ while( $row = mysqli_fetch_assoc($result) ) {
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
+            <span>Copyright © Quartee 2019</span>
           </div>
         </div>
       </footer>

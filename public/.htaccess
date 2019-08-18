@@ -18,3 +18,4 @@ RewriteRule ^statistik?$ guest/statistik.php
 RewriteRule ^compl?$ guest/compl.php
 RewriteRule ^inf?$ guest/inf.php
 RewriteRule ^req?$ guest/req.php
+RewriteRule ^saran?$ guest/saran.php

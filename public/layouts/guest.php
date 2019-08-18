@@ -1,5 +1,5 @@
 <?php require '../config/guest-config.php';?>
-<?php 
+<?php
     if (isset($_POST['req']) && addReq($_POST)>0) {
      echo "<script>
             alert('Request Data Sukses');
@@ -18,7 +18,7 @@
 <div class="mb-5">
     <p class="">Want to request Data ?</p>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#req">
-    Request 
+    Request
     </button>
 </div>
 <div class="row justify-content-md-center">
@@ -42,11 +42,11 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Bulan Awal</label>
-                <input id="datepicker" class="form-control" required name="awal"/>          
+                <input id="bulanAwal" class="form-control" required name="awal"/>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Bulan AKhir</label>
-                <input id="datepickers" class="form-control" required name="akhir"/>          
+                <input id="bulanAkhir" class="form-control" required name="akhir"/>
             </div>
             <button type="submit" class="w-100 btn btn-primary mb-5" name='run'>RUN REPORT</button>
         </form>
@@ -71,7 +71,7 @@
                 <input type="text" class="form-control" id="title" placeholder="Judul permainan..." name="reqtitle" required>
             </div>
             <div class="form-group">
-                <label for="uk">Unit Kerja</label>
+                <label for="uk">Posisi</label>
                 <input type="text" class="form-control" id="uk" placeholder="Unit kerja..."  value="GUEST" readonly>
                 <input type="hidden" class="form-control" id="uk" placeholder="Unit kerja..." name="unitkerja" value="<?=$_SESSION['data']['role_id'];?>">
             </div>
@@ -84,11 +84,12 @@
                 <input type="text" class="form-control" id="tujuan" placeholder="Tujuan permintaan..." name="tujuan" required>
             </div>
             <div class="form-group">
-                <label for="priode">Periode Permintaan</label>
-                <select class="form-control" id="priode" name="priode" required>
-                    <option value="perbulan">Perbulan</option>
-                    <option value="pertahun">Pertahun</option>
-                </select>
+                <label for="exampleFormControlSelect1">Bulan Awal</label>
+                <input id="awalBulan" class="form-control" required name="awal"/>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Bulan AKhir</label>
+                <input id="akhirBulan" class="form-control" required name="akhir"/>
             </div>
             <div class="form-group">
                 <label for="priode">Priority</label>

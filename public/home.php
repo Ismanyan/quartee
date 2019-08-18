@@ -58,7 +58,7 @@
           <span>Dashboard</span>
         </a>
       </li>
-      
+
       <?php if($_SESSION['data']['role_id'] == 1) : ?>
       <li class="nav-item">
         <a class="nav-link" href="data">
@@ -100,7 +100,7 @@
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
+            <span>Copyright © Quartee 2019</span>
           </div>
         </div>
       </footer>
@@ -152,6 +152,7 @@
   <!-- Custom scripts for all pages-->
   <script src="../resources/js/sb-admin.min.js"></script>
   <script src="../resources/js/ajax.js"></script>
+  <script src="../resources/js/upload.js"></script>
 
   <!-- Demo scripts for this page-->
   <script src="../resources/js/demo/datatables-demo.js"></script>
@@ -166,6 +167,22 @@
     $('#datepickers').datepicker({
         uiLibrary: 'bootstrap4',
         format: 'yyyy-mm-dd'
+    });
+    $('#awalBulan').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'yyyy-mm-dd'
+    });
+    $('#akhirBulan').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'yyyy-mm-dd'
+    });
+    $('#bulanAwal').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'mm-dd-yyyy'
+    });
+    $('#bulanAkhir').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'mm-dd-yyyy'
     });
     $('.custom-file-input').on('change',function(){
       var fileName = $(this).val();

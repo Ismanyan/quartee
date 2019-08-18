@@ -9,6 +9,7 @@ $(document).ready(function () {
             $('#name').val(datas.name);
             $('#nip').val(datas.nip);
             $('#role').val(datas.role_id);
+            $('#ut').val(datas.unit_kerja);
             $('#datepickers').val(datas.ttl);
             $('#domain').val(datas.domain);
             $('#username').val(datas.username);

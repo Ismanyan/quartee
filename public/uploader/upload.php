@@ -14,7 +14,6 @@ if (isset($_POST['addtable']) && addTableNew($_POST)>0) {
 			document.location.href = 'data';
 			</script>"; 
 }
-
 if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
   echo "<script>
 			alert('Berhasil menambah data');
@@ -170,7 +169,7 @@ if (isset($_POST['addProduk']) && addProduk($_POST)>0) {
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
+            <span>Copyright © Quartee 2019</span>
           </div>
         </div>
       </footer>
