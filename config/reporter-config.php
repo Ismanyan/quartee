@@ -3,7 +3,7 @@
 require'db.php';
 
 use voku\helper\AntiXSS;
-require_once '../vendor/anti-xss/autoload.php';
+require_once 'anti-xss/autoload.php';
 $antiXss = new AntiXSS();
 
 function getAllQna()
@@ -22,14 +22,14 @@ function sendAnswer($data)
 {
     global $conn,$antiXss;
     
-    $idask = $antiXss->xss_clean($data["idask"]);
-	$ids = $antiXss->xss_clean($data["ids"]);
-    $answer = $antiXss->xss_clean($data["answer"]);
+    $idask = $antiXss->xss_clean($data["idask"]); //id quest
+	$ids = $antiXss->xss_clean($data["ids"]); // id answer
+    $answer = $antiXss->xss_clean($data["answer"]); //answer
 
 	// tambahkan userbaru ke database
 	mysqli_query($conn, "UPDATE `qna` SET 
 	`answer` = '$answer',
-    `answer_id` = '$idask' 
+    `answer_id` = '$ids' 
 	WHERE `id` = '$idask'");
     
 	return mysqli_affected_rows($conn);

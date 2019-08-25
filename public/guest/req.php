@@ -7,7 +7,8 @@ if(!isset($_SESSION["login"]) ) {
 }
 
 require '../../config/guest-config.php';
-$query = "SELECT produk,kategori,total FROM top10 WHERE kategori LIKE '%REQ/%' ORDER BY total DESC LIMIT 10";
+$produk = $antiXss->xss_clean($_GET["produk"]);
+$query = "SELECT produk,kategori,total FROM top10 WHERE kategori LIKE '%REQ/%' AND produk = '$produk' ORDER BY total DESC LIMIT 10";
 
 $result = mysqli_query($conn, $query);
 // check data
@@ -26,19 +27,19 @@ while( $row = mysqli_fetch_assoc($result) ) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="REPORTING PORTAL HALO BCA">
 	<meta name="author" content="Quarte">
-	<link rel="shortcut icon" href="../resources/img/favicon.png">
+	<link rel="shortcut icon" href="../../resources/img/favicon.png">
 
 
   <title>Req | Quartee</title>
 
   <!-- Custom fonts for this template-->
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
   <!-- Page level plugin CSS-->
-  <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="../../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="../resources/css/sb-admin.css" rel="stylesheet">
+  <link href="../../resources/css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -91,7 +92,7 @@ while( $row = mysqli_fetch_assoc($result) ) {
 
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mb-5">
-          <li class="breadcrumb-item active"><a href="../home">back</a></li>
+          <li class="breadcrumb-item active"><a href="../../home">back</a></li>
         </ol>
 
 				<div class="card mb-3" id="card">
@@ -169,19 +170,19 @@ while( $row = mysqli_fetch_assoc($result) ) {
 
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../vendor/jquery/jquery.min.js"></script>
+  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Page level plugin JavaScript-->
-  <script src="../vendor/datatables/jquery.dataTables.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+  <script src="../../vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../../vendor/datatables/dataTables.bootstrap4.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="../resources/js/sb-admin.min.js"></script>
-  <script src="../resources/js/demo/datatables-demo.js"></script>
+  <script src="../../resources/js/sb-admin.min.js"></script>
+  <script src="../../resources/js/demo/datatables-demo.js"></script>
 
 </body>
 

@@ -1,4 +1,3 @@
-<?php require'../../config/auth-config.php';?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +11,10 @@
     <link rel="stylesheet" type="text/css" href="../vendor/ioform/css/fontawesome-all.min.css">
     <link rel="stylesheet" type="text/css" href="../vendor/ioform/css/iofrm-style.css">
     <link rel="stylesheet" type="text/css" href="../vendor/ioform/css/iofrm-theme14.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
+<?php require'../../config/auth-config.php';?>
     <div class="form-body">
         <div class="row">
             <div class="form-holder">

@@ -11,6 +11,7 @@ RewriteRule ^logout?$ auth/logout.php
 
 RewriteRule ^home?$ home.php
 RewriteRule ^data?$ uploader/upload.php
+RewriteRule ^qna?$ layouts/reporter.php
 RewriteRule ^result?$ guest/result.php
 RewriteRule ^statistik?$ guest/statistik.php
 

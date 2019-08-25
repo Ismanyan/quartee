@@ -88,7 +88,7 @@ function addProduk($data)
 function allReqData()
 {
     global $conn;
-    $result = mysqli_query($conn,"SELECT * FROM request");
+    $result = mysqli_query($conn,"SELECT * FROM request WHERE `status` = 0");
     $rows = [];
 	while( $row = mysqli_fetch_assoc($result) ) {
 		$rows[] = $row;

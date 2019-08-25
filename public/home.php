@@ -20,7 +20,6 @@
 
   <!-- Custom styles for this template-->
   <link href="../resources/css/sb-admin.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -66,12 +65,11 @@
           <span>Upload Data</span></a>
       </li>
       <?php endif;?>
-
-      <?php if($_SESSION['data']['role_id'] == 3) : ?>
+      <?php if($_SESSION['data']['role_id'] == 2) : ?>
       <li class="nav-item">
-        <a class="nav-link" href="statistik">
-          <i class="fas fa-fw fa-chart-pie"></i>
-          <span>Statistik</span></a>
+        <a class="nav-link" href="qna">
+          <i class="fas fa-fw fa-table"></i>
+          <span>QNA</span></a>
       </li>
       <?php endif;?>
     </ul>
@@ -157,8 +155,8 @@
   <!-- Demo scripts for this page-->
   <script src="../resources/js/demo/datatables-demo.js"></script>
   <script src="../resources/js/demo/chart-area-demo.js"></script>
-  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.css" rel="stylesheet"/>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
   <script>
     $('#datepicker').datepicker({
         uiLibrary: 'bootstrap4',
@@ -169,25 +167,29 @@
         format: 'yyyy-mm-dd'
     });
     $('#awalBulan').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd'
+      uiLibrary: 'bootstrap4',
+      format: 'mm-yyyy',
+      minViewMode: "months"
     });
     $('#akhirBulan').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd'
+      uiLibrary: 'bootstrap4',
+      format: 'mm-yyyy',
+      minViewMode: "months"
     });
     $('#bulanAwal').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'mm-dd-yyyy'
+      uiLibrary: 'bootstrap4',
+      format: 'mm-dd-yyyy',
+      minViewMode: "months"
     });
     $('#bulanAkhir').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'mm-dd-yyyy'
+      uiLibrary: 'bootstrap4',
+      format: 'mm-dd-yyyy',
+      minViewMode: "months"
     });
     $('.custom-file-input').on('change',function(){
       var fileName = $(this).val();
       $(this).next('.form-control-file').addClass("selected").html(fileName);
-    })
+    });
   </script>
 </body>
 

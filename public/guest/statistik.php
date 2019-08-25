@@ -72,11 +72,7 @@ for ($b=0; $b < count($rows); $b++) {
 
 if (isset($_POST['qna'])) {
 	$sendchat = sendChat($_POST);
-	if ($sendchat !== 0) {
-		$sendStat = 1;
-	} else {
-		$sendStat = 0;
-	}
+  $sendStat = 0;
 }
 
 $start = mysqli_query($conn,"SELECT id,total_data FROM data_per_month WHERE total_data IS NOT NULL ORDER BY id ASC LIMIT 1");
@@ -87,8 +83,13 @@ $end_data = mysqli_fetch_assoc($end);
 if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
 	$resultStatistik = 0;
 } else {
-	$resultStatistik = ($end_data["total_data"] / $start_data["total_data"]) - 2;
+  $resultStatistik = ($end_data["total_data"] / $start_data["total_data"]) - 2;
+  $resultStatistik = round($resultStatistik,2);
 }
+
+// Answer check
+$id_user = $_SESSION['data']['id'];
+$answerCheck = mysqli_query($conn,"SELECT answer FROM qna WHERE id_user = $id_user AND answer IS NULL");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,25 +168,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
           <li class="breadcrumb-item active">Statistik</li>
         </ol>
 
-        <!-- SLIDER -->
-        <div id="carouselExampleControls" class="carousel slide mb-5" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img class="d-block w-100" src="../resources/img/RUNNING BANNER 1.png" alt="First slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block w-100" src="../resources/img/RUNNING BANNER 2.png" alt="Second slide">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+        
 
         <div class="row">
           <div class="col-lg-8">
@@ -202,10 +185,10 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
           <div class="col-lg-4">
             <div class="card">
               <div class="card-header">
-                Persentase pencapaian
+                Pencapaian dan Penurunan
               </div>
               <div class="card-body py-5">
-                <p>Rata-rata pencapaian penaikan/penurunan</p>
+                <p>plus (+) adalah peningkatan , Minus (-) adalah penurunan</p>
                 <h1><?= $resultStatistik ?>%</h1>
               </div>
             </div>
@@ -219,7 +202,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
                       Statistik Pekembangan
                   </div>
                   <div class="card-body">
-                      <p>Total <b>Compl</b> kartu kredit</p>
+                      <p>Total <b>Compl</b></p>
                       <h4 class="text-success"><?= getAllResultData('COMPL/');?></h4>
                   </div>
               </div>
@@ -230,7 +213,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
                       Statistik Pekembangan
                   </div>
                   <div class="card-body">
-                      <p>Total <b>Inf</b> kartu kredit</p>
+                      <p>Total <b>Inf</b></p>
                       <h4 class="text-success"><?= getAllResultData('INF/');?></h4>
                   </div>
               </div>
@@ -241,7 +224,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
                       Statistik Pekembangan
                   </div>
                   <div class="card-body">
-                      <p>Total <b>Req</b> kartu kredit</p>
+                      <p>Total <b>Req</b></p>
                       <h4 class="text-success"><?= getAllResultData('REQ/');?></h4>
                   </div>
               </div>
@@ -252,7 +235,7 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
                       Statistik Pekembangan
                   </div>
                   <div class="card-body">
-                      <p>Total <b>Saran</b> kartu kredit</p>
+                      <p>Total <b>Saran</b></p>
                       <h4 class="text-success"><?= getAllResultData('SARAN/');?></h4>
                   </div>
               </div>
@@ -303,46 +286,52 @@ if ($end_data["total_data"] == NULL &&$start_data["total_data"] == NULL) {
                     QnA
                 </div>
                 <div class="card-body">
-									<?php if (isset($sendStat) && $sendStat !== 0): ?>
-										<div class="card mb-5">
-											<div class="card-header">
-												Daftar Jawaban
-											</div>
-												<div class="card-body">
-												<ul class="list-group" style="max-height:500px; overflow-y: scroll;">
-												<?php foreach ($sendchat as $row): ?>
-													<li class="list-group-item d-flex justify-content-between align-items-center">
-												    <?= $row['quest'] ?>
-												    <button class="badge badge-primary badge-pill" data-toggle="modal" data-target="#jawaban-<?= $row['id'] ?>">Jawaban</button>
-												  </li>
-													<!-- Modal -->
-													<div class="modal fade" id="jawaban-<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="jawabanLabel" aria-hidden="true">
-													  <div class="modal-dialog" role="document">
-													    <div class="modal-content">
-													      <div class="modal-header">
-													        <h5 class="modal-title" id="jawabanLabel"><?= $row['quest'] ?></h5>
-													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													          <span aria-hidden="true">&times;</span>
-													        </button>
-													      </div>
-													      <div class="modal-body">
-																	<?= $row['answer'] ?>
-													      </div>
-													      <div class="modal-footer">
-													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-													      </div>
-													    </div>
-													  </div>
-													</div>
-												<?php endforeach; ?>
-												</ul>
-											</div>
-										</div>
-									<?php elseif(isset($sendStat) && $sendStat === 0): ?>
-										<div class="alert alert-info" role="alert">
-											Pertanyaan berhasil dikirim.
-										</div>
-										<?php endif; ?>
+                  <?php if(mysqli_num_rows($answerCheck)>0) : ?>
+                  <div class="alert alert-warning pt-3">
+                    <p><?= mysqli_num_rows($answerCheck);?> Pertanyaan anda belum terjawab</p>
+                  </div>
+                    <?php else:?>
+                    <div class="alert alert-info pt-3">
+                      <p>Anda belum mengajukan pertanyaan</p>
+                    </div>
+                  <?php endif; ?>
+
+
+									<?php if (isset($sendStat) && $sendStat === 0): ?>
+                  <div class="alert alert-info" role="alert">
+                    Pertanyaan berhasil dikirim.
+                  </div>
+                  <?php endif; ?>
+
+                  <div class="card mb-5" style="max-height:200px; overflow-y: scroll;">
+                    <ul class="list-group">
+                    <?php foreach(getAnswer($id_user) as $row) : ?>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <?= $row['quest']?>
+                        <a href="#" class="badge badge-primary badge-pill" data-toggle="modal" data-target="#lihatjawaban<?=$row['id']?> ">Lihat Jawaban</a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="lihatjawaban<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="lihatjawabanLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="lihatjawabanLabel">Jawaban Pertanyaan</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <?= $row['answer']?>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    <?php endforeach; ?>
+                    </ul>
+                  </div>
 
                   <form action="" method="post">
                     <div class="form-inline">

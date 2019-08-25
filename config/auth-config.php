@@ -1,3 +1,4 @@
+
 <?php
 
 require 'db.php';
@@ -33,6 +34,6 @@ if (isset($_POST['submit'])) {
 
 if (isset($error)) {
 	echo "<script>
-			alert('User & Password Invalid')
-		</script>";
+	swal('User & Password Invalid', 'If there are problems logging in or new user submission process please contact Ward (Ext. 57242)', 'error')
+	</script>";
 }

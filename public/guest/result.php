@@ -92,7 +92,7 @@ if (isset($_POST['run']) && count($_POST['kategori']) > 1) {
 	   }
 		}
 		$lAr++;
-	}
+  }
 }
 elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
 	$lAr = 0;
@@ -124,6 +124,7 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
    10 => 0, //nov
    11 => 0 //des
  );
+
  foreach($result as $row) {
 	 if ($row['month'] == 'Jan') {
      $month[0]++;
@@ -162,6 +163,35 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
      $month[11]++;
    }
   }
+}
+
+// Get First value month
+foreach ($month as $key) {
+  if ($key !== 0) {
+    $start_data = $key;
+    break;
+  } 
+  else {
+    $start_data = 0;
+  }
+}
+
+// Get Last value month
+for ($i=11; $i > 0; $i--) { 
+  if ($month[$i] !== 0) {
+    $end_data = $month[$i];
+    break;
+  }
+  else {
+    $end_data = 0;
+  }
+}
+
+if ($start_data == NULL && $end_data == NULL || $start_data == 0 && $end_data == 0) {
+	$resultStatistik = 0;
+} else {
+  $resultStatistik = ($end_data / $start_data) - 2;
+  $resultStatistik = round($resultStatistik,2);
 }
 
 ?>
@@ -227,12 +257,6 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
           <span>Dashboard</span>
         </a>
       </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="../statistik">
-          <i class="fas fa-fw fa-chart-pie"></i>
-          <span>Statistik</span></a>
-      </li>
     </ul>
 
     <div id="content-wrapper">
@@ -249,12 +273,112 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
 					<?php $kat = implode(",",$_POST['kategori']); ?>
 					<a href="export.php?produk=<?=$produk ?>&kategori=<?= $kat ?>&awal=<?= $start?>&akhir=<?= $end?>" class="btn btn-primary mb-5" target="_blank">Export Excel</a>
         <!-- Area Chart Example-->
-        <div class="card mb-3">
+        <div class="card mb-5">
           <div class="card-header">
             <i class="fas fa-chart-area"></i>
             Statistik</div>
           <div class="card-body">
             <canvas id="myAreaChart" width="100%" height="30"></canvas>
+          </div>
+        </div>
+
+        <!-- Statistik -->
+        <div class="row mb-5">
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Compl</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultData('COMPL/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Inf</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultData('INF/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Req</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultData('REQ/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Saran</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultData('SARAN/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-sm-6">
+            <!-- Pencapaian dan Penurunan -->
+            <div class="card">
+              <div class="card-header">
+                Pencapaian dan Penurunan
+              </div>
+              <div class="card-body py-5">
+                <p>plus (+) adalah peningkatan , Minus (-) adalah penurunan</p>
+                <h1><?= $resultStatistik; ?>%</h1>
+              </div>
+            </div>  
+          </div>
+
+          <!-- Recomendasi -->
+          <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Recomendations
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>compl</b> <?= $produk ?></p>
+                            <a href="compl.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Req</b> <?= $produk ?></p>
+                            <a href="req.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Inf</b> <?= $produk ?></p>
+                            <a href="inf.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Saran</b> <?= $produk ?></p>
+                            <a href="saran.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
           </div>
         </div>
 
@@ -276,6 +400,7 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
                     <tbody>
 											<?php for ($i=0; $i < $lAr; $i++):  ?>
 												<?php foreach ($result[$i] as $row): ?>
+             
 														<tr>
 															<td><?php echo $row['month'] ?></td>
 															<!-- Counting -->
@@ -328,6 +453,107 @@ elseif (isset($_POST['run']) && count($_POST['kategori']) < 2) {
             Statistik</div>
           <div class="card-body">
             <canvas id="myAreaChart" width="100%" height="30"></canvas>
+          </div>
+        </div>
+
+        <!-- Statistik -->
+        <div class="row mb-5">
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Compl</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultDataOne('COMPL/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Inf</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultDataOne('INF/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Req</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultDataOne('REQ/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3">
+              <div class="card">
+                  <div class="card-header">
+                      Statistik Pekembangan
+                  </div>
+                  <div class="card-body">
+                      <p>Total <b>Saran</b> <?= $produk ?></p>
+                      <h4 class="text-success"><?= getAllResultDataOne('SARAN/',$produk,$start,$end);?></h4>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+
+                <div class="row mb-5">
+          <div class="col-sm-6">
+            <!-- Pencapaian dan Penurunan -->
+            <div class="card">
+              <div class="card-header">
+                Pencapaian dan Penurunan
+              </div>
+              <div class="card-body py-5">
+                <p>plus (+) adalah peningkatan , Minus (-) adalah penurunan</p>
+                <h1><?= $resultStatistik; ?>%</h1>
+              </div>
+            </div>  
+          </div>
+
+          <!-- Recomendasi -->
+          <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Recomendations
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>compl</b> <?= $produk ?></p>
+                            <a href="compl.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Req</b> <?= $produk ?></p>
+                            <a href="req.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Inf</b> <?= $produk ?></p>
+                            <a href="inf.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p>TOP 10 <b>Saran</b> <?= $produk ?></p>
+                            <a href="saran.php?produk=<?= $produk ?>">
+                              <span class="badge badge-primary badge-pill">Klik Here</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
           </div>
         </div>
 

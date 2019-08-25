@@ -9,18 +9,81 @@
 ?>
 <!-- Upload Check -->
 
+<style>
+    /* Hide prev/next buttons and month name*/
+    .datepicker-days>table>thead>tr>th.prev,
+    .datepicker-days>table>thead>tr>th.datepicker-switch,
+    .datepicker-days>table>thead>tr>th.next {
+        display: none;
+    }
+
+    /* Hide days of previous month */
+    td.old.day{
+        visibility: hidden;
+    }
+
+    /* Hide days of next month */
+    td.new.day{
+        display: none;
+    }
+</style>
+
 <!-- Breadcrumbs-->
 <ol class="breadcrumb mb-5">
    <li class="breadcrumb-item">Guest Page</li>
    <li class="breadcrumb-item active">Request Data</li>
 </ol>
 
-<div class="mb-5">
+<!-- SLIDER -->
+<div id="carouselExampleControls" class="carousel slide mb-5" data-ride="carousel">
+    <div class="carousel-inner">
+    <div class="carousel-item active">
+        <img class="d-block w-100" src="../resources/img/RUNNING BANNER 1.png" alt="First slide">
+    </div>
+    <div class="carousel-item">
+        <img class="d-block w-100" src="../resources/img/RUNNING BANNER 2.png" alt="Second slide">
+    </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<?php $name = $_SESSION['data']['name']; ?>
+
+<?php if(getAnswerCheck($name) > 0) : ?>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Request anda belum kami respon. Mohon untuk menunggu beberapa saat
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <?php elseif(getAnswerCheck($name) === 0) : ?>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+    Request anda telah kami respon. Silahkan <a href="guest/req-data.php?name=<?= $name ?>" class="alert-link">klik disini</a> untuk melihat
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+<?php endif; ?>
+<div class="my-5 ">
     <p class="">Want to request Data ?</p>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#req">
     Request
     </button>
 </div>
+
+<div class="alert alert-info alert-dismissible fade show mb-5" role="alert">
+    Jika ada pertanyaan tentang produk kami. Silahkan <a href="guest/qna.php?name=<?= $name ?>" class="alert-link">klik disini</a>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <div class="row justify-content-md-center">
     <div class="col-lg-12">
         <form action="guest/result.php" method="post">

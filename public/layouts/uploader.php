@@ -59,33 +59,33 @@ $check = mysqli_query($conn,"SELECT month_add FROM upload_date  WHERE month_add 
                             <td><?= $row['month_add'] ?></td>
                             <td><?= $row['created_at'] ?></td>
                             <td><a href="#" class="badge badge-warning" data-toggle="modal" data-target="#addtable<?= $row['id'] ?>">Edit</a></td>
-              							<!-- add Modal -->
-              							<div class="modal fade" id="addtable<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="addtableLabel" aria-hidden="true">
-              								<div class="modal-dialog" role="document">
-              									<div class="modal-content">
-              									<div class="modal-header">
-              										<h5 class="modal-title" id="addtableLabel">Edit Upload Data</h5>
-              										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              										<span aria-hidden="true">&times;</span>
-              										</button>
-              									</div>
-              									<form method="post" enctype="multipart/form-data" action="../config/edit-upload-system.php">
-              										<div class="modal-body">
-              										<input type="hidden" value="<?=$_SESSION['data']['id']?>" name="id">
-              										<input type="hidden" value="<?= $row['created_at'] ?>" name="created_at">
-              										<div class="form-group" >
-              											<label for="product">Tanggal Upload</label>
-              											<input type="text" class="form-control" id="product" placeholder="Product..." value="<?= $row['created_at'] ?>" readonly>
-              										</div>
-              										<div class="form-group">
-              											<input name="filepegawai" type="file" required="required">
-              										</div>
-              										<button type="submit" class="w-100 btn btn-primary" name="upload" onclick="return confirm('Yakin ingin melanjutkan dan akan menghapus datamu pada bulan ini?');">Save Change</button>
-              										</div>
-              									</form>
-              									</div>
-              								</div>
-              							</div>
+							<!-- add Modal -->
+							<div class="modal fade" id="addtable<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="addtableLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="addtableLabel">Edit Upload Data</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form method="post" enctype="multipart/form-data" action="../config/edit-upload-system.php">
+										<div class="modal-body">
+										<input type="hidden" value="<?=$_SESSION['data']['id']?>" name="id">
+										<input type="hidden" value="<?= $row['created_at'] ?>" name="created_at">
+										<div class="form-group" >
+											<label for="product">Tanggal Upload</label>
+											<input type="text" class="form-control" id="product" placeholder="Product..." value="<?= $row['created_at'] ?>" readonly>
+										</div>
+										<div class="form-group">
+											<input name="filepegawai" type="file" required="required">
+										</div>
+										<button type="submit" class="w-100 btn btn-primary" name="upload" onclick="return confirm('Yakin ingin melanjutkan dan akan menghapus datamu pada bulan ini?');">Save Change</button>
+										</div>
+									</form>
+									</div>
+								</div>
+							</div>
                         </tr>
                          <?php endforeach; ?>
                     </tbody>
@@ -110,6 +110,7 @@ $check = mysqli_query($conn,"SELECT month_add FROM upload_date  WHERE month_add 
 									<th>Awal Bulan</th>
 									<th>Akhir Bulan</th>
 									<th>Priority</th>
+									<th>Respon</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -119,6 +120,31 @@ $check = mysqli_query($conn,"SELECT month_add FROM upload_date  WHERE month_add 
 									<td><?= $row['awal_bulan'] ?></td>
 									<td><?= $row['akhir_bulan'] ?></td>
 									<td><?= $row['priority'] ?></td>
+									<td><a href="#" class="badge badge-warning" data-toggle="modal" data-target="#respon<?= $row['id'] ?>">Respon</a></td>
+									<!-- add Modal -->
+									<div class="modal fade" id="respon<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="responLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="responLabel">Respon Request</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<form method="post" enctype="multipart/form-data" action="../config/req-respon-system.php">
+												<div class="modal-body">
+												<div class="form-group">
+													<input name="filepegawai" type="file" required="required">
+												</div>
+												<input type="hidden" value="<?=$_SESSION['data']['id']?>" name="id">
+												<input type="hidden" value="<?= $row['name'] ?>" name="idRequester">
+												<input type="hidden" value="<?= $row['req_title'] ?>" name="reqTitle">
+												<button type="submit" class="w-100 btn btn-primary" name="upload">Save Change</button>
+												</div>
+											</form>
+											</div>
+										</div>
+									</div>
 								</tr>
 								<?php endforeach; ?>
 							</tbody>
