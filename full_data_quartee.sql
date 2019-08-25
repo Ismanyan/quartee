@@ -24634,7 +24634,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `role_id`, `nip`, `ttl`, `domain`, `created_at`, `unit_kerja`) VALUES
-(1, 'bilkis ismail', 'ismanyan', '$2y$10$ZFRGMzSWekEiNUsum26LB.fJkDKeVE4vGswXNb4.ToVBVFY7K/2iG', 3, '12345', '2002-04-07', 'ismanyan.dev', '2019-08-12 01:57:59', 'lorem');
+(1, 'bilkis ismail', 'ismanyan', '$2y$10$ZFRGMzSWekEiNUsum26LB.fJkDKeVE4vGswXNb4.ToVBVFY7K/2iG', 1, '12345', '2002-04-07', 'ismanyan.dev', '2019-08-12 01:57:59', 'lorem');
 
 --
 -- Indexes for dumped tables
