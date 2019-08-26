@@ -107,13 +107,25 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="form-group mx-auto">
+            <div class="form-group mx-auto after-add-more">
                 <label for="kategori">Kategori</label>
-                <select class="form-control" id="kategori" required name="kategori[]" multiple size = 6>
+                <select class="form-control" id="kategori" required name="kategori[]">
                     <?php foreach(getAllKategori() as $row) : ?>
                     <option value="<?= $row['kategori_name']?>"><?= $row['kategori_name']?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <button class="btn btn-success add-more mb-2" type="button"><i class="glyphicon glyphicon-plus"></i> Add more kategori</button>
+            <!-- Copy Fields -->
+            <div class="copy d-none">
+                <div class="form-group mx-auto">
+                    <label for="kategori">Kategori</label>
+                    <select class="form-control" id="kategori" required name="kategori[]">
+                        <?php foreach(getAllKategori() as $row) : ?>
+                        <option value="<?= $row['kategori_name']?>"><?= $row['kategori_name']?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Bulan Awal</label>

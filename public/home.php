@@ -186,9 +186,22 @@
       format: 'mm-dd-yyyy',
       minViewMode: "months"
     });
+
+    // Upload form
     $('.custom-file-input').on('change',function(){
       var fileName = $(this).val();
       $(this).next('.form-control-file').addClass("selected").html(fileName);
+    });
+
+    // Dynamic form
+    $(document).ready(function() {
+      $(".add-more").click(function(){ 
+          var html = $(".copy").html();
+          $(".after-add-more").after(html);
+      });
+      $("body").on("click",".remove",function(){ 
+          $(this).parents(".control-group").remove();
+      });
     });
   </script>
 </body>
