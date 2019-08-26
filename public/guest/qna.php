@@ -105,10 +105,6 @@ if (isset($_POST['sendChat']) && sendChat($_POST) >0) {
             <?php if(count(getQnaAll($_POST['produk']))>0) : ?>
                 <?php foreach(getQnaAll($_POST['produk']) as $row) : ?>
                 <div class="card mb-3">
-                    <div class="card-body bg-info text-white">
-                        <h3>Question</h3>
-                        <?= $row['quest'] ?>
-                    </div>
                     <div class="card-body">
                         <h3>Answer</h3>
                         <?php if($row['answer'] == NULL) : ?>

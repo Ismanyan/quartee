@@ -9,7 +9,7 @@ $antiXss = new AntiXSS();
 function getAllQna()
 {
     global $conn;
-    $result = mysqli_query($conn,"SELECT * FROM qna WHERE answer IS NULL ORDER BY id DESC");
+    $result = mysqli_query($conn,"SELECT * FROM qna ORDER BY id DESC");
     $rows = [];
 	while( $row = mysqli_fetch_assoc($result) ) {
 		$rows[] = $row;

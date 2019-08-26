@@ -6,6 +6,9 @@
             document.location.href = 'home';
          </script>";
     }
+    $myId = $_SESSION['data']['id'];
+    $chekAnswer = mysqli_query($conn,"SELECT id FROM qna WHERE answer IS NOT NULL AND id_user = '$myId'");
+    
 ?>
 <!-- Upload Check -->
 
@@ -83,6 +86,15 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
+<?php if(mysqli_num_rows($chekAnswer)>0) : ?>
+<div class="alert alert-success alert-dismissible fade show mb-5" role="alert">
+    pertanyaan anda telah kami respon
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<?php endif; ?>
 
 <div class="row justify-content-md-center">
     <div class="col-lg-12">
